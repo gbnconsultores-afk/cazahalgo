@@ -69,7 +69,9 @@
   // Accesos rápidos por categoría, ordenados por número de ofertas.
   const conteo = {}; ofertas.forEach((o) => { conteo[o.categoria] = (conteo[o.categoria] || 0) + 1; });
   const cats = Object.entries(conteo).sort((a, b) => b[1] - a[1]);
-  $('#cats').innerHTML = `<button type="button" data-c="Todas">Todo <span>${ofertas.length}</span></button>` + cats.map(([c, n]) => `<button type="button" data-c="${esc(c)}">${esc(c)} <span>${n}</span></button>`).join('');
+  const IC = window.CZ_ICONOS || {}; const ic = (c) => `<i class="ico">${IC[c] || IC.otro || ''}</i>`;
+  $('#cats').innerHTML = `<button type="button" data-c="Todas">${ic('Todas')}<b>Todo</b><span>${ofertas.length}</span></button>` + cats.map(([c, n]) => `<button type="button" data-c="${esc(c)}">${ic(c)}<b>${esc(c)}</b><span>${n}</span></button>`).join('');
+  document.querySelectorAll('.conf-in [data-i]').forEach((d) => { if (IC[d.dataset.i]) d.insertAdjacentHTML('afterbegin', `<i class="ico">${IC[d.dataset.i]}</i>`); });
   $('#cats').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; st.cat = b.dataset.c; $('#cat').value = st.cat; $('#q').value = ''; st.q = ''; pintar(); document.querySelector('.barra').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   $('#fTienda').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { st.tienda = b.dataset.t; pintar(); } });
   $('#cat').addEventListener('change', (e) => { st.cat = e.target.value; pintar(); });
