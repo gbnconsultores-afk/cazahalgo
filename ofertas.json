@@ -914,7 +914,7 @@
    "nombre": "Mercado Libre",
    "nota": "Ofertas del día",
    "url": "https://www.mercadolibre.com.mx/ofertas",
-   "afiliado": false
+   "afiliado": true
   },
   {
    "nombre": "Temu",
@@ -932,31 +932,7 @@
    "nombre": "AliExpress",
    "nota": "Ofertas",
    "url": "https://es.aliexpress.com/",
-   "afiliado": false
-  },
-  {
-   "nombre": "Walmart",
-   "nota": "Ofertas",
-   "url": "https://www.walmart.com.mx/content/ofertas",
-   "afiliado": false
-  },
-  {
-   "nombre": "Sam's Club",
-   "nota": "Mayoreo y membresía",
-   "url": "https://www.sams.com.mx/",
-   "afiliado": false
-  },
-  {
-   "nombre": "Costco",
-   "nota": "Mayoreo y membresía",
-   "url": "https://www.costco.com.mx/",
-   "afiliado": false
-  },
-  {
-   "nombre": "City Club",
-   "nota": "Mayoreo y membresía",
-   "url": "https://www.cityclub.com.mx/",
-   "afiliado": false
+   "afiliado": true
   }
  ]
 }
