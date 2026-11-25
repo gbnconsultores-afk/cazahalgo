@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://http2.mlstatic.com https://m.media-amazon.com https://img.kwcdn.com https://ae01.alicdn.com data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>CAZAHAL GO! | Ofertas verificadas de Mercado Libre, Amazon, Temu y más</title>
+<meta name="description" content="Ofertas reales y verificadas de Mercado Libre, Amazon, Temu, AliExpress y más tiendas en línea de México. Precio revisado antes de publicar, cupones y enlaces seguros.">
+<link rel="canonical" href="https://cazahalgo.com/">
+<link rel="icon" href="img/favicon.ico">
+<link rel="apple-touch-icon" href="img/apple-touch-icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CAZAHAL GO! | Ofertas verificadas">
+<meta property="og:description" content="Ve la oportunidad. Ve por ella. Ofertas reales de tiendas en línea de México.">
+<meta property="og:image" content="https://cazahalgo.com/img/og-cazahalgo-1200x630.png">
+<meta property="og:url" content="https://cazahalgo.com/">
+<meta name="theme-color" content="#0E2747">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a href="/" class="logo"><img src="img/logo.png" alt="CAZAHAL GO!" width="302" height="60"></a>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#ofertas-sec">Ofertas</a>
+      <a href="#cupones">Cupones</a>
+      <a href="#tiendas">Tiendas</a>
+      <a href="#guardadas" class="guard-link">Guardadas <span id="nGuard" class="pill">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-txt">
+      <span class="eyebrow">Ofertas verificadas en México</span>
+      <h1>Ve la oportunidad.<br><span>Ve por ella.</span></h1>
+      <p>Cazamos descuentos reales en Mercado Libre, Amazon, Temu y más. Revisamos el precio antes de publicar y te llevamos directo a la tienda oficial.</p>
+      <label class="buscar">
+        <span class="sr">Buscar ofertas</span>
+        <input id="q" type="search" placeholder="¿Qué buscas? Licuadora, árbol, taladro…" autocomplete="off">
+      </label>
+      <ul class="datos" id="datos"></ul>
+    </div>
+    <div class="masc-wrap"><img class="masc" src="img/halcon.webp" alt="Halcón de CAZAHAL GO!" width="307" height="420"></div>
+  </div>
+</section>
+
+<section class="confianza">
+  <div class="wrap conf-in">
+    <div><strong>Precio revisado</strong><span>Cada oferta dice cuándo la verificamos.</span></div>
+    <div><strong>Tiendas oficiales</strong><span>Compras y pagas en la tienda, nunca aquí.</span></div>
+    <div><strong>Sin datos personales</strong><span>No pedimos registro ni tarjeta.</span></div>
+    <div><strong>Transparencia</strong><span>Indicamos qué enlaces nos dan comisión.</span></div>
+  </div>
+</section>
+
+<main class="wrap" id="ofertas-sec">
+  <nav class="cats" id="cats" aria-label="Categorías"></nav>
+  <div class="barra">
+    <div class="filtros" id="fTienda" role="group" aria-label="Tienda"></div>
+    <div class="orden">
+      <label for="cat">Categoría</label>
+      <select id="cat"></select>
+      <label for="ord">Ordenar</label>
+      <select id="ord">
+        <option value="top">Destacadas</option>
+        <option value="vend">Más vendidos</option>
+        <option value="desc">Mayor descuento</option>
+        <option value="barato">Menor precio</option>
+        <option value="ahorro">Mayor ahorro en pesos</option>
+        <option value="nuevo">Más recientes</option>
+      </select>
+    </div>
+  </div>
+  <p class="aviso-af">Algunos enlaces son de afiliado: si compras a través de ellos, CAZAHAL GO! puede recibir una comisión sin costo extra para ti. <a href="aviso-de-afiliados.html">Cómo funciona</a>.</p>
+  <div class="grid" id="ofertas" aria-live="polite"></div>
+  <p class="vacio" id="vacio" hidden>No encontramos ofertas con ese filtro. Prueba otra búsqueda.</p>
+
+  <section id="guardadas" class="bloque" hidden>
+    <h2>Tus ofertas guardadas</h2>
+    <p class="sub">Se guardan solo en este dispositivo.</p>
+    <div class="grid" id="gGrid"></div>
+  </section>
+
+  <section id="cupones" class="bloque">
+    <h2>Cupones y códigos</h2>
+    <p class="sub">Copia el código y úsalo al pagar en la tienda. Las condiciones las fija cada tienda.</p>
+    <div class="cupones" id="cGrid"></div>
+  </section>
+
+  <section id="tiendas" class="bloque">
+    <h2>Tiendas que revisamos</h2>
+    <p class="sub">Entra directo a las ofertas de cada tienda.</p>
+    <div class="tiendas" id="tGrid"></div>
+  </section>
+
+  <section class="bloque como">
+    <h2>Cómo cazamos una oferta</h2>
+    <ol>
+      <li><strong>Buscamos</strong> descuentos en tiendas de México.</li>
+      <li><strong>Verificamos</strong> precio actual contra precio anterior, reputación del vendedor y envío.</li>
+      <li><strong>Publicamos</strong> con fecha y hora de revisión.</li>
+      <li><strong>Tú decides</strong>: compras en la tienda oficial, con su garantía.</li>
+    </ol>
+    <p class="consejo">Consejo de seguridad: antes de pagar revisa que la dirección del navegador sea la de la tienda (por ejemplo mercadolibre.com.mx o amazon.com.mx). CAZAHAL GO! nunca te pedirá datos de tarjeta, contraseñas ni pagos por mensaje.</p>
+  </section>
+</main>
+
+<section class="unete">
+  <div class="wrap unete-in">
+    <div>
+      <h2>Recibe las ofertas del día</h2>
+      <p>Síguenos y te avisamos cuando baja un precio de verdad.</p>
+    </div>
+    <div class="unete-btn">
+      <a class="btn ir" href="https://www.facebook.com/profile.php?id=61597146592036" target="_blank" rel="noopener">Seguir en Facebook</a>
+      <a class="btn sec" id="waCanal" href="#" hidden target="_blank" rel="noopener">Canal de WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer class="pie" id="contacto">
+  <div class="wrap pie-in">
+    <div><img src="img/logo.png" alt="CAZAHAL GO!" width="151" height="30" class="pie-logo"><p>Chihuahua, México</p></div>
+    <div><p><strong>Contacto</strong><br><a href="mailto:contacto@cazahalgo.com">contacto@cazahalgo.com</a></p></div>
+    <div><p><a href="aviso-de-afiliados.html">Aviso de afiliados</a><br><a href="aviso-de-privacidad.html">Aviso de privacidad</a></p></div>
+  </div>
+  <p class="wrap nota">Los precios y la disponibilidad los define cada tienda y pueden cambiar. Verifica el precio final antes de pagar.</p>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js" defer></script>
+</body>
+</html>
