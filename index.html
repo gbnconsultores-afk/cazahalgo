@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>CAZAHAL GO! | Ofertas verificadas de Mercado Libre, Amazon, Temu y más</title>
 <meta name="description" content="Ofertas reales y verificadas de Mercado Libre, Amazon, Temu, AliExpress y más tiendas en línea de México. Precio revisado antes de publicar, cupones y enlaces seguros.">
-<link rel="canonical" href="https://cazahalgo.com/">
+<link rel="canonical" href="https://www.cazahalgo.com/">
 <link rel="icon" href="img/favicon.ico">
 <link rel="apple-touch-icon" href="img/apple-touch-icon-180.png">
 <meta property="og:type" content="website">
@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+<div class="anuncio" aria-label="Avisos"><div class="anuncio-track" id="anuncio"></div></div>
 <header class="top">
   <div class="wrap top-in">
     <a href="/" class="logo"><img src="img/logo.png" alt="CAZAHAL GO!" width="302" height="60"></a>
@@ -56,7 +57,11 @@
   </div>
 </section>
 
+<section class="bf" id="bf" hidden></section>
+
 <main class="wrap" id="ofertas-sec">
+  <section class="tira rel" id="relampago" hidden aria-label="Ofertas relámpago"></section>
+  <section class="tira liq" id="liquidacion" hidden aria-label="Liquidación"></section>
   <nav class="cats" id="cats" aria-label="Categorías"></nav>
   <div class="barra">
     <div class="filtros" id="fTienda" role="group" aria-label="Tienda"></div>
@@ -125,11 +130,12 @@
   <div class="wrap pie-in">
     <div><img src="img/logo.png" alt="CAZAHAL GO!" width="151" height="30" class="pie-logo"><p>Chihuahua, México</p></div>
     <div><p><strong>Contacto</strong><br><a href="mailto:contacto@cazahalgo.com">contacto@cazahalgo.com</a></p></div>
-    <div><p><a href="aviso-de-afiliados.html">Aviso de afiliados</a><br><a href="aviso-de-privacidad.html">Aviso de privacidad</a></p></div>
+    <div><p><a href="aviso-de-privacidad.html">Aviso de privacidad</a><br><a href="terminos.html">Términos y condiciones</a><br><a href="cookies.html">Política de cookies</a><br><a href="aviso-de-afiliados.html">Aviso de afiliados</a><br><button type="button" class="enlace" data-priv>Privacidad y cookies</button></p></div>
   </div>
-  <p class="wrap nota">Los precios y la disponibilidad los define cada tienda y pueden cambiar. Verifica el precio final antes de pagar.</p>
+  <p class="wrap nota">Los precios y la disponibilidad los define cada tienda y pueden cambiar. Verifica el precio final antes de pagar. Algunos enlaces son de afiliado (publicidad): podemos recibir una comisión sin costo extra para ti. Las marcas mencionadas pertenecen a sus titulares; CAZAHAL GO! no es tienda oficial ni está patrocinado por ellas.</p>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="privacidad.js" defer></script>
 <script src="iconos.js" defer></script>
 <script src="app.js" defer></script>
 </body>

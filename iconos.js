@@ -26,6 +26,8 @@ window.CZ_ICONOS = (() => {
     'tienda': s('<path d="M4 9l1.5-5h13L20 9M4 9h16v11H4z"/><path d="M9 20v-6h6v6"/>'),
     'candado': s('<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'),
     'ojo': s('<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+    'rayo': s('<path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="currentColor" stroke="none"/>'),
+    'etiqueta': s('<path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor"/>'),
     'otro': s('<circle cx="12" cy="12" r="8"/><path d="M9 12h6"/>')
   };
 })();

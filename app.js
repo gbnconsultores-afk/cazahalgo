@@ -14,9 +14,9 @@
   const vnum = (v) => { if (!v) return 0; const m = String(v).replace(/[+,\s]/g, '').match(/(\d+)(mil)?/i); return m ? Number(m[1]) * (m[2] ? 1000 : 1) : 0; };
   const ofertas = (data.ofertas || []).filter((o) => o.activa !== false).map((o) => ({ ...o, pct: o.precio_antes > o.precio ? Math.round((1 - o.precio / o.precio_antes) * 100) : 0, ahorro: o.precio_antes > o.precio ? o.precio_antes - o.precio : 0, nv: vnum(o.vendidos) }));
   ofertas.forEach((o) => { o.score = o.pct + (o.comision_pct || 0) * 1.5 + Math.log10(1 + o.nv) * 6; });
-  const KEY = 'cazahal_guardadas';
-  let guard = new Set(); try { guard = new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch { /* sin almacenamiento */ }
-  const saveG = () => { try { localStorage.setItem(KEY, JSON.stringify([...guard])); } catch { /* ignorar */ } $('#nGuard').textContent = guard.size; };
+  const KEY = 'cz_guardadas'; const puede = () => !!(window.CZ_PRIV && window.CZ_PRIV.funcional());
+  let guard = new Set(); try { if (puede()) guard = new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch { /* sin almacenamiento */ }
+  const saveG = () => { try { if (puede()) localStorage.setItem(KEY, JSON.stringify([...guard])); } catch { /* ignorar */ } $('#nGuard').textContent = guard.size; };
   const st = { tienda: 'Todas', cat: 'Todas', q: '', ord: 'top' };
 
   const tiendas = ['Todas', ...new Set(ofertas.map((o) => o.tienda))];
@@ -82,10 +82,63 @@
     const c = e.target.closest('[data-copy]'); if (c) copiar(c.dataset.copy);
   });
 
-  $('#cGrid').innerHTML = (data.cupones || []).map((c) => `<div class="cupon"><span class="t">${esc(c.titulo)}</span><span class="d">${esc(c.tienda)} · ${esc(c.condicion)}</span>
+  // --- Promociones: aviso superior, Black Friday, relámpago y liquidación (solo datos reales) ---
+  const IC2 = window.CZ_ICONOS || {};
+  const msgs = ['Black Friday 27 al 30 de noviembre: selección de ofertas revisadas', 'Ofertas relámpago con los mayores descuentos del momento', 'Precios revisados con fecha y hora en cada oferta', 'Cupones de Temu para usuarios nuevos', 'Compras directo en la tienda oficial, sin registro'];
+  const linea = msgs.map((m) => `<span>${esc(m)}</span>`).join('<i>•</i>');
+  $('#anuncio').innerHTML = `<div>${linea}<i>•</i></div><div aria-hidden="true">${linea}<i>•</i></div>`;
+
+  const BF_INI = new Date('2026-11-27T00:00:00-06:00'), BF_FIN = new Date('2026-11-30T23:59:59-06:00');
+  const bf = $('#bf');
+  if (Date.now() < BF_FIN) {
+    bf.innerHTML = `<div class="wrap bf-in"><div class="bf-t"><span class="bf-k">BLACK FRIDAY</span><span class="bf-s">Selección CAZAHAL GO! · 27 al 30 de noviembre</span></div>
+      <div class="bf-c"><span id="bfEt"></span><span class="bf-r" id="bfR" aria-live="off"></span></div>
+      <a href="#ofertas-sec" class="btn bf-b" data-ord="desc">Ver mayores descuentos</a>
+      <p class="bf-n">Cada tienda define sus fechas, precios y condiciones.</p></div>`;
+    bf.hidden = false;
+    const dd = (n) => String(n).padStart(2, '0');
+    const tic = () => {
+      const now = Date.now(); const antes = now < BF_INI; const fin = antes ? BF_INI : BF_FIN; let s = Math.max(0, Math.floor((fin - now) / 1000));
+      if (!antes && s === 0) { bf.hidden = true; clearInterval(tic.h); return; }
+      const d = Math.floor(s / 86400); s %= 86400; const h = Math.floor(s / 3600); s %= 3600; const m = Math.floor(s / 60); s %= 60;
+      $('#bfEt').textContent = antes ? 'Arranca en' : 'Termina en';
+      $('#bfR').innerHTML = `<b>${d}</b>d <b>${dd(h)}</b>h <b>${dd(m)}</b>m <b>${dd(s)}</b>s`;
+    };
+    tic(); tic.h = setInterval(tic, 1000);
+  }
+
+  const mini = (o) => {
+    const url = seguro(o.url_afiliado || o.url); if (!url || !seguro(o.imagen)) return '';
+    return `<a class="mini" href="${esc(url)}" target="_blank" rel="${o.url_afiliado ? 'sponsored ' : ''}nofollow noopener noreferrer" title="${esc(o.nombre)}">
+      <span class="mini-f"><img src="${esc(seguro(o.imagen))}" alt="${esc(o.nombre)}" loading="lazy" referrerpolicy="no-referrer"><b class="mini-d">-${o.pct}%</b></span>
+      <span class="mini-p">${fmt(o.precio)} <s>${fmt(o.precio_antes)}</s></span>
+      <span class="mini-n">${esc(o.nombre)}</span>
+      <span class="mini-v">${esc(o.tienda)}${o.vendidos ? ' · ' + esc(o.vendidos) + ' vendidos' : ''}</span></a>`;
+  };
+  const tira = (sel, titulo, sub, lista, ico, ord) => {
+    const el = $(sel); if (lista.length < 4) return;
+    el.innerHTML = `<div class="tira-h"><span class="tira-t">${ico}${esc(titulo)}</span><span class="tira-s">${esc(sub)}</span><a href="#ofertas-sec" class="tira-m" data-ord="${ord}">Ver todas ›</a></div>
+      <div class="tira-c">${lista.map(mini).join('')}</div><p class="tira-af">Algunos enlaces son de afiliado. Verifica el precio final en la tienda.</p>`;
+    el.hidden = false;
+  };
+  const hrs = (o) => (Date.now() - new Date(o.fecha_consulta)) / 36e5;
+  const porDesc = (a, b) => b.pct - a.pct;
+  const recientes = ofertas.filter((o) => o.pct >= 20 && hrs(o) <= 24).sort(porDesc);
+  const rel = (recientes.length >= 4 ? recientes : ofertas.filter((o) => o.pct >= 20).sort(porDesc)).slice(0, 12);
+  tira('#relampago', 'Ofertas relámpago', recientes.length >= 4 ? 'Mayores descuentos revisados en las últimas 24 horas' : 'Mayores descuentos del momento', rel, IC2.rayo || '', 'desc');
+  const idsRel = new Set(rel.map((o) => o.id));
+  const liq = ofertas.filter((o) => o.pct >= 45 && !idsRel.has(o.id)).sort((a, b) => b.ahorro - a.ahorro).slice(0, 12);
+  tira('#liquidacion', 'Liquidación', 'Descuentos de 45% o más contra el precio anterior de la tienda', liq.length >= 4 ? liq : ofertas.filter((o) => o.pct >= 45).sort((a, b) => b.ahorro - a.ahorro).slice(0, 12), IC2.etiqueta || '', 'ahorro');
+  document.addEventListener('click', (e) => {
+    const m = e.target.closest('[data-ord]'); if (!m) return; e.preventDefault();
+    st.ord = m.dataset.ord; $('#ord').value = st.ord; st.cat = 'Todas'; $('#cat').value = 'Todas'; st.q = ''; $('#q').value = ''; pintar();
+    document.querySelector('.barra').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  $('#cGrid').innerHTML = (data.cupones || []).map((c) => `<div class="cupon"><span class="t">${esc(c.titulo)}</span><span class="d">${esc(c.tienda)} · ${esc(c.condicion)}</span>${c.afiliado !== false ? '<span class="tag af">Afiliado · publicidad</span>' : ''}
     ${c.codigo ? `<div class="cod"><code>${esc(c.codigo)}</code><button type="button" data-copy="${esc(c.codigo)}">Copiar</button></div>` : ''}
     ${seguro(c.url) ? `<a class="btn ir" href="${esc(seguro(c.url))}" target="_blank" rel="sponsored nofollow noopener noreferrer">Usar en ${esc(c.tienda)}</a>` : ''}</div>`).join('');
-  $('#tGrid').innerHTML = (data.tiendas || []).map((s) => seguro(s.url) ? `<a href="${esc(seguro(s.url))}" target="_blank" rel="${s.afiliado ? 'sponsored ' : ''}nofollow noopener noreferrer"><strong>${esc(s.nombre)}</strong><span>${esc(s.nota)}</span></a>` : '').join('');
+  $('#tGrid').innerHTML = (data.tiendas || []).map((s) => seguro(s.url) ? `<a href="${esc(seguro(s.url))}" target="_blank" rel="${s.afiliado ? 'sponsored ' : ''}nofollow noopener noreferrer"><strong>${esc(s.nombre)}</strong><span>${esc(s.nota)}</span>${s.afiliado ? '<span class="tag af">Afiliado</span>' : ''}</a>` : '').join('');
   pintar();
   if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView({ block: 'center' }); }
 })();
